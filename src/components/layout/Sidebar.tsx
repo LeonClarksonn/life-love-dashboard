@@ -8,7 +8,7 @@ const navItems = [
   { icon: ClipboardCheck, label: 'Tasks', href: '/tasks' },
   { icon: Target, label: 'Goals', href: '/goals' },
   { icon: Wallet, label: 'Finances', href: '/finances' },
-  { icon: BrainCircuit, label: 'Habits', href: '#' },
+  { icon: BrainCircuit, label: 'Habits', href: '/habits' },
 ];
 
 const Sidebar = () => {

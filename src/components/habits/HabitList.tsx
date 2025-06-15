@@ -1,20 +1,29 @@
 
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { useHabitsStore, habitIcons } from "@/hooks/useHabitsStore";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
-import { useHabitsStore, habitIcons } from '@/hooks/useHabitsStore';
 
-const HabitTracker = () => {
+const HabitList = () => {
   const { habits, toggleHabit } = useHabitsStore();
-  const habitsToShow = habits.slice(0, 4);
+
+  if (habits.length === 0) {
+    return (
+      <Card>
+        <CardContent className="pt-6">
+          <p className="text-muted-foreground text-center">No habits yet. Add one to get started!</p>
+        </CardContent>
+      </Card>
+    );
+  }
 
   return (
-    <Card className="h-full">
+    <Card>
       <CardHeader>
-        <CardTitle>Daily Habits</CardTitle>
+        <CardTitle>All Habits</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
-          {habitsToShow.map(habit => {
+          {habits.map(habit => {
             const Icon = habitIcons[habit.icon];
             return (
               <div key={habit.id} className="flex items-center justify-between p-2 rounded-md hover:bg-secondary">
@@ -27,7 +36,7 @@ const HabitTracker = () => {
                   onCheckedChange={() => toggleHabit(habit.id)}
                 />
               </div>
-            )
+            );
           })}
         </div>
       </CardContent>
@@ -35,4 +44,4 @@ const HabitTracker = () => {
   );
 };
 
-export default HabitTracker;
+export default HabitList;
