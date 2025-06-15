@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useMemo } from "react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
@@ -69,6 +68,16 @@ const SleepTracker = () => {
     return data;
   }, [sleepData]);
 
+  const averageSleepHours = useMemo(() => {
+    const daysWithSleep = weeklyData.filter(d => d.hours > 0);
+    if (daysWithSleep.length === 0) return 0;
+    const totalHours = daysWithSleep.reduce((sum, day) => sum + day.hours, 0);
+    return totalHours / daysWithSleep.length;
+  }, [weeklyData]);
+
+  const averageHours = Math.floor(averageSleepHours);
+  const averageMinutes = Math.round((averageSleepHours - averageHours) * 60);
+
   return (
     <Card>
       <CardHeader>
@@ -80,11 +89,24 @@ const SleepTracker = () => {
       </CardHeader>
       <CardContent className="space-y-6">
         <div>
-            <h4 className="text-lg font-medium mb-2">This Week's Sleep</h4>
+            <div className="mb-4">
+                <p className="text-sm text-muted-foreground">Average time asleep</p>
+                <p className="text-2xl font-bold">{averageHours}h {averageMinutes}min</p>
+            </div>
             <div className="h-48">
                 <ResponsiveContainer width="100%" height="100%">
                     <BarChart data={weeklyData} margin={{ top: 5, right: 20, left: -10, bottom: 5 }}>
-                        <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                        <defs>
+                            <linearGradient id="sleepBarGradient" x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="5%" stopColor="hsl(210 80% 60% / 0.5)" />
+                                <stop offset="25%" stopColor="hsl(210 80% 40% / 0.8)" />
+                                <stop offset="45%" stopColor="hsl(210 80% 60% / 0.5)" />
+                                <stop offset="50%" stopColor="hsl(0 80% 60% / 0.9)" />
+                                <stop offset="60%" stopColor="hsl(210 80% 60% / 0.5)" />
+                                <stop offset="75%" stopColor="hsl(210 80% 40% / 0.8)" />
+                                <stop offset="95%" stopColor="hsl(210 80% 60% / 0.5)" />
+                            </linearGradient>
+                        </defs>
                         <XAxis dataKey="name" tickLine={false} axisLine={false} dy={10} />
                         <YAxis allowDecimals={false} tickLine={false} axisLine={false} width={30} />
                         <Tooltip
@@ -98,7 +120,7 @@ const SleepTracker = () => {
                             itemStyle={{ color: "hsl(var(--primary))" }}
                             formatter={(value: number) => [`${value.toFixed(1)} hours`, "Sleep"]}
                         />
-                        <Bar dataKey="hours" fill="hsl(var(--primary))" radius={[4, 4, 0, 0]} />
+                        <Bar dataKey="hours" fill="url(#sleepBarGradient)" radius={[4, 4, 0, 0]} />
                     </BarChart>
                 </ResponsiveContainer>
             </div>
