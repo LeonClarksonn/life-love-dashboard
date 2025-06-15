@@ -1,10 +1,10 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { useGoalsStore } from "@/hooks/useGoalsStore";
+import { useGoals, type Goal } from "@/hooks/useGoals";
 import { CheckCircle2, Target } from "lucide-react";
-import { type Goal } from "@/components/goals/GoalList";
 import { Link } from "react-router-dom";
 import { Button } from "../ui/button";
+import { Skeleton } from "../ui/skeleton";
 
 const GoalItem = ({ goal }: { goal: Goal }) => (
   <li className="flex items-center gap-2">
@@ -20,10 +20,39 @@ const GoalItem = ({ goal }: { goal: Goal }) => (
 );
 
 const GoalsOverview = () => {
-  const { monthlyGoals, yearlyGoals } = useGoalsStore();
+  const { monthlyGoals, yearlyGoals, isLoading } = useGoals();
 
   const monthlyGoalsToShow = monthlyGoals.slice(0, 3);
   const yearlyGoalsToShow = yearlyGoals.slice(0, 3);
+
+  if (isLoading) {
+    return (
+      <Card>
+        <CardHeader className="flex flex-row items-center justify-between pb-2">
+          <CardTitle className="text-lg">Goals Overview</CardTitle>
+          <Button asChild variant="ghost" size="sm">
+              <Link to="/goals">View All</Link>
+          </Button>
+        </CardHeader>
+        <CardContent className="space-y-4">
+           <div>
+            <Skeleton className="h-5 w-24 mb-2" />
+            <div className="space-y-2">
+              <Skeleton className="h-4 w-4/5" />
+              <Skeleton className="h-4 w-3/5" />
+            </div>
+          </div>
+          <div>
+            <Skeleton className="h-5 w-24 mb-2" />
+            <div className="space-y-2">
+              <Skeleton className="h-4 w-4/5" />
+              <Skeleton className="h-4 w-3/5" />
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    )
+  }
 
   return (
     <Card className="mb-8">

@@ -5,7 +5,7 @@ import * as z from "zod";
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Plus } from "lucide-react";
+import { Plus, Loader2 } from "lucide-react";
 
 const formSchema = z.object({
   text: z.string().min(1, { message: "Goal cannot be empty." }),
@@ -14,9 +14,10 @@ const formSchema = z.object({
 interface AddGoalFormProps {
   onAddGoal: (text: string) => void;
   placeholder: string;
+  isPending: boolean;
 }
 
-const AddGoalForm = ({ onAddGoal, placeholder }: AddGoalFormProps) => {
+const AddGoalForm = ({ onAddGoal, placeholder, isPending }: AddGoalFormProps) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -44,8 +45,8 @@ const AddGoalForm = ({ onAddGoal, placeholder }: AddGoalFormProps) => {
             </FormItem>
           )}
         />
-        <Button type="submit" size="icon">
-          <Plus className="h-4 w-4" />
+        <Button type="submit" size="icon" disabled={isPending}>
+          {isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : <Plus className="h-4 w-4" />}
         </Button>
       </form>
     </Form>

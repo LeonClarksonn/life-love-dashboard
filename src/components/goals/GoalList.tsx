@@ -1,20 +1,33 @@
 
 import { CheckCircle2, Target, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-
-export interface Goal {
-  id: number;
-  text: string;
-  completed: boolean;
-}
+import { Skeleton } from "@/components/ui/skeleton";
+import type { Goal } from "@/hooks/useGoals";
 
 interface GoalListProps {
   goals: Goal[];
-  onToggleGoal: (id: number) => void;
-  onDeleteGoal: (id: number) => void;
+  onToggleGoal: (id: string) => void;
+  onDeleteGoal: (id: string) => void;
+  isLoading?: boolean;
 }
 
-const GoalList = ({ goals, onToggleGoal, onDeleteGoal }: GoalListProps) => {
+const GoalList = ({ goals, onToggleGoal, onDeleteGoal, isLoading = false }: GoalListProps) => {
+  if (isLoading) {
+    return (
+      <div className="space-y-4 pt-4">
+        {[...Array(3)].map((_, i) => (
+          <div key={i} className="flex items-center space-x-4">
+            <Skeleton className="h-6 w-6 rounded-full" />
+            <div className="flex-grow">
+              <Skeleton className="h-4 w-4/5" />
+            </div>
+            <Skeleton className="h-8 w-8" />
+          </div>
+        ))}
+      </div>
+    );
+  }
+
   if (goals.length === 0) {
     return <p className="text-muted-foreground text-sm text-center py-4">No goals yet. Add one above!</p>;
   }
