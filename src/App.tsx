@@ -18,7 +18,7 @@ const queryClient = new QueryClient();
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <AuthProvider>
-      <ThemeProvider defaultTheme="system" storageKey="vite-ui-theme">
+      <ThemeProvider attribute="class" defaultTheme="system" storageKey="vite-ui-theme">
         <BrowserRouter>
           <Routes>
             <Route path="/auth" element={<AuthPage />} />
