@@ -1,5 +1,5 @@
 
-import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 import { useTransactions } from "@/hooks/useFinance";
 import { Skeleton } from "@/components/ui/skeleton";
 import { startOfWeek, endOfWeek, isWithinInterval } from 'date-fns';
@@ -29,7 +29,7 @@ const IncomeExpenseCards = () => {
     <>
       <Card>
         <CardHeader>
-          <CardDescription>Income</CardDescription>
+          <p className="text-sm text-muted-foreground">Income</p>
           <div className="flex items-baseline gap-2">
             <CardTitle className="text-3xl font-bold text-green-600">
                 +{new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(weeklyIncome)}
@@ -40,7 +40,7 @@ const IncomeExpenseCards = () => {
       </Card>
       <Card>
         <CardHeader>
-          <CardDescription>Expense</CardDescription>
+          <p className="text-sm text-muted-foreground">Expense</p>
           <div className="flex items-baseline gap-2">
             <CardTitle className="text-3xl font-bold text-red-600">
                 -{new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(weeklyExpense)}

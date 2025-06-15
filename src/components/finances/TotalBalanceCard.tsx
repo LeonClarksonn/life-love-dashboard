@@ -1,5 +1,5 @@
 
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { RefreshCcw } from "lucide-react";
 import { useAccounts } from "@/hooks/useFinance";
@@ -13,7 +13,7 @@ const TotalBalanceCard = () => {
   return (
     <Card className="bg-gradient-to-br from-primary/80 to-primary text-primary-foreground border-none">
       <CardHeader>
-        <CardDescription className="text-primary-foreground/80">Total balance</CardDescription>
+        <p className="text-primary-foreground/80">Total balance</p>
         {isLoading ? (
           <Skeleton className="h-10 w-48 bg-white/20" />
         ) : (
