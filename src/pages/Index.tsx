@@ -5,6 +5,7 @@ import QuoteCard from "@/components/dashboard/QuoteCard";
 import Tasks from "@/components/dashboard/Tasks";
 import HabitTracker from "@/components/dashboard/HabitTracker";
 import GoalsOverview from "@/components/dashboard/GoalsOverview";
+import StepCounter from "@/components/dashboard/StepCounter";
 
 const Index = () => {
   return (
@@ -21,7 +22,10 @@ const Index = () => {
           </div>
           <div className="space-y-8">
             <HabitTracker />
-            <GoalsOverview />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <StepCounter />
+              <GoalsOverview />
+            </div>
           </div>
         </div>
       </main>
