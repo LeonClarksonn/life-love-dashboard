@@ -25,7 +25,7 @@ const Sidebar = ({ isMobile = false }: { isMobile?: boolean }) => {
         <ul>
           {navItems.map((item) => (
             <li key={item.label}>
-              <Button asChild variant={pathname === item.href ? "secondary" : "ghost"} className="w-full justify-start text-base font-medium mb-2">
+              <Button asChild variant={pathname === item.href ? "secondary" : "ghost"} className={cn("w-full justify-start text-base font-medium mb-2", pathname === item.href && "active-sidebar-link")}>
                 <Link to={item.href}>
                   <item.icon className="mr-4 h-5 w-5" />
                   {item.label}
@@ -55,7 +55,7 @@ const Sidebar = ({ isMobile = false }: { isMobile?: boolean }) => {
                 </p>
               </div>
             </div>
-            <Button asChild variant={pathname === '/settings' ? "secondary" : "ghost"} className="w-full justify-start text-base font-medium mb-2">
+            <Button asChild variant={pathname === '/settings' ? "secondary" : "ghost"} className={cn("w-full justify-start text-base font-medium mb-2", pathname === '/settings' && 'active-sidebar-link')}>
               <Link to="/settings">
                 <Settings className="mr-4 h-5 w-5" />
                 Settings
