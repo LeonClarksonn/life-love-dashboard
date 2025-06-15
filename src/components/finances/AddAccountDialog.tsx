@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button"
 import {
   Dialog,
@@ -39,7 +38,11 @@ export function AddAccountDialog() {
   });
 
   const onSubmit = (values: z.infer<typeof accountSchema>) => {
-    addAccountMutation.mutate(values, {
+    addAccountMutation.mutate({
+      name: values.name,
+      type: values.type,
+      balance: values.balance
+    }, {
       onSuccess: () => {
         setOpen(false);
         form.reset();

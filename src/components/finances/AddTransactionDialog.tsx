@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button"
 import {
   Dialog,
@@ -49,8 +48,12 @@ export function AddTransactionDialog() {
   
   const onSubmit = async (values: z.infer<typeof transactionSchema>) => {
     const transactionData: Omit<TablesInsert<'transactions'>, 'user_id'> = {
-      ...values,
+      description: values.description,
+      amount: values.amount,
+      type: values.type,
       date: values.date.toISOString(),
+      account_id: values.account_id,
+      category_id: values.category_id,
     };
     
     addTransactionMutation.mutate(transactionData, {
