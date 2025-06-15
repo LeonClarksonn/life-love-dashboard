@@ -56,13 +56,17 @@ export const useAddTransaction = () => {
     const { toast } = useToast();
 
     return useMutation({
-        mutationFn: async (transaction: TablesInsert<'transactions'>) => {
+        mutationFn: async (transaction: Omit<TablesInsert<'transactions'>, 'user_id'>) => {
+            const { data: { user } } = await supabase.auth.getUser();
+            if (!user) throw new Error("User not authenticated");
+
             // First, insert the transaction
-            const { error: transactionError } = await supabase.from('transactions').insert(transaction);
+            const { error: transactionError } = await supabase.from('transactions').insert({ ...transaction, user_id: user.id });
             if (transactionError) throw new Error(transactionError.message);
 
             // Then, update the account balance
-            const account = (await queryClient.fetchQuery({ queryKey: ['accounts']}) as any[])?.find(a => a.id === transaction.account_id);
+            const accounts = await queryClient.fetchQuery({ queryKey: ['accounts'], queryFn: fetchAccounts });
+            const account = accounts?.find(a => a.id === transaction.account_id);
             
             if (account) {
               const newBalance = transaction.type === 'income'
@@ -87,4 +91,3 @@ export const useAddTransaction = () => {
         }
     });
 };
-
