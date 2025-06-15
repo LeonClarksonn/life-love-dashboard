@@ -1,12 +1,28 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+
+import Sidebar from "@/components/layout/Sidebar";
+import Greeting from "@/components/dashboard/Greeting";
+import QuoteCard from "@/components/dashboard/QuoteCard";
+import Tasks from "@/components/dashboard/Tasks";
+import HabitTracker from "@/components/dashboard/HabitTracker";
 
 const Index = () => {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
-      </div>
+    <div className="flex min-h-screen bg-background font-sans">
+      <Sidebar />
+      <main className="flex-1 p-8 sm:p-12 overflow-y-auto">
+        <Greeting />
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-8">
+          <div className="lg:col-span-2">
+            <Tasks />
+          </div>
+          <div>
+            <HabitTracker />
+          </div>
+        </div>
+        <div className="mt-8">
+          <QuoteCard />
+        </div>
+      </main>
     </div>
   );
 };
