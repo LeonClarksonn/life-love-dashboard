@@ -1,42 +1,18 @@
 
-import { useState } from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import AddGoalForm from './AddGoalForm';
-import GoalList, { type Goal } from './GoalList';
+import GoalList from './GoalList';
+import { useGoalsStore } from "@/hooks/useGoalsStore";
 
 const Goals = () => {
-  const [dailyGoals, setDailyGoals] = useState<Goal[]>([]);
-  const [monthlyGoals, setMonthlyGoals] = useState<Goal[]>([]);
-  const [yearlyGoals, setYearlyGoals] = useState<Goal[]>([]);
-
-  const addGoal = (text: string, type: 'daily' | 'monthly' | 'yearly') => {
-    const newGoal: Goal = {
-      id: Date.now(),
-      text,
-      completed: false,
-    };
-    if (type === 'daily') {
-      setDailyGoals(prev => [newGoal, ...prev]);
-    } else if (type === 'monthly') {
-      setMonthlyGoals(prev => [newGoal, ...prev]);
-    } else {
-      setYearlyGoals(prev => [newGoal, ...prev]);
-    }
-  };
-
-  const toggleGoal = (id: number, type: 'daily' | 'monthly' | 'yearly') => {
-    const setGoals = type === 'daily' ? setDailyGoals : type === 'monthly' ? setMonthlyGoals : setYearlyGoals;
-    setGoals(prev =>
-      prev.map(goal =>
-        goal.id === id ? { ...goal, completed: !goal.completed } : goal
-      )
-    );
-  };
-
-  const deleteGoal = (id: number, type: 'daily' | 'monthly' | 'yearly') => {
-    const setGoals = type === 'daily' ? setDailyGoals : type === 'monthly' ? setMonthlyGoals : setYearlyGoals;
-    setGoals(prev => prev.filter(goal => goal.id !== id));
-  };
+  const { 
+    dailyGoals, 
+    monthlyGoals, 
+    yearlyGoals, 
+    addGoal, 
+    toggleGoal, 
+    deleteGoal 
+  } = useGoalsStore();
 
   return (
     <div className="space-y-8">

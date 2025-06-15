@@ -4,6 +4,7 @@ import Greeting from "@/components/dashboard/Greeting";
 import QuoteCard from "@/components/dashboard/QuoteCard";
 import Tasks from "@/components/dashboard/Tasks";
 import HabitTracker from "@/components/dashboard/HabitTracker";
+import GoalsOverview from "@/components/dashboard/GoalsOverview";
 
 const Index = () => {
   return (
@@ -15,8 +16,9 @@ const Index = () => {
           <div className="lg:col-span-2">
             <Tasks />
           </div>
-          <div>
+          <div className="space-y-8">
             <HabitTracker />
+            <GoalsOverview />
           </div>
         </div>
         <div className="mt-8">
