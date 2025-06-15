@@ -18,7 +18,7 @@ const initialTasks: Task[] = [
   { id: 3, text: 'Plan out the day', completed: false },
 ];
 
-const Tasks = () => {
+const Tasks = ({ title = "Today's Focus" }: { title?: string }) => {
   const [tasks, setTasks] = useState<Task[]>(initialTasks);
   const [newTask, setNewTask] = useState('');
 
@@ -40,7 +40,7 @@ const Tasks = () => {
   return (
     <Card className="h-full">
       <CardHeader>
-        <CardTitle>Today's Focus</CardTitle>
+        <CardTitle>{title}</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="flex gap-2 mb-4">
