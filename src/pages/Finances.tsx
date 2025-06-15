@@ -7,12 +7,14 @@ import { ArrowRight, Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import RevenueChart from "@/components/finances/RevenueChart";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import RecentTransactions from "@/components/finances/RecentTransactions";
+import { AddTransactionDialog } from "@/components/finances/AddTransactionDialog";
 
 const Finances = () => {
   return (
     <div className="flex min-h-screen bg-background font-sans">
       <Sidebar />
-      <main className="flex-1 p-8 sm:p-12 overflow-y-auto">
+      <main className="flex-1 p-4 sm:p-8 md:p-12 overflow-y-auto">
         <header className="md:hidden flex justify-between items-center mb-4">
           <h1 className="font-serif text-xl font-bold text-primary">Life Dashboard</h1>
           <Sheet>
@@ -26,10 +28,16 @@ const Finances = () => {
             </SheetContent>
           </Sheet>
         </header>
-        <h2 className="text-3xl font-bold">Finances</h2>
-        <p className="text-muted-foreground mt-1">Here's an overview of your financial status.</p>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-8">
+        <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-4 mb-8">
+          <div>
+            <h2 className="text-3xl font-bold">Finances</h2>
+            <p className="text-muted-foreground mt-1">Here's an overview of your financial status.</p>
+          </div>
+          <AddTransactionDialog />
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2 space-y-8">
             <TotalBalanceCard />
             <Card>
@@ -47,8 +55,8 @@ const Finances = () => {
                   See All <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
               </CardHeader>
-              <CardContent>
-                <p className="text-muted-foreground">Transaction list coming soon!</p>
+              <CardContent className="p-0">
+                <RecentTransactions />
               </CardContent>
             </Card>
           </div>
@@ -59,7 +67,7 @@ const Finances = () => {
                 <CardTitle>My Cards</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-muted-foreground">Card list coming soon!</p>
+                <p className="text-muted-foreground">Account list coming soon!</p>
               </CardContent>
             </Card>
             <Card>

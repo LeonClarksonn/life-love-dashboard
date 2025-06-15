@@ -9,33 +9,58 @@ import {
   ChartTooltipContent,
   type ChartConfig,
 } from "@/components/ui/chart"
-
-const chartData = [
-  { date: "2025-06-01", btc: 45000 },
-  { date: "2025-06-02", btc: 46500 },
-  { date: "2025-06-03", btc: 48000 },
-  { date: "2025-06-04", btc: 47000 },
-  { date: "2025-06-05", btc: 49500 },
-  { date: "2025-06-06", btc: 51000 },
-  { date: "2025-06-07", btc: 50500 },
-  { date: "2025-06-08", btc: 52000 },
-  { date: "2025-06-09", btc: 53500 },
-  { date: "2025-06-10", btc: 53000 },
-  { date: "2025-06-11", btc: 54000 },
-  { date: "2025-06-12", btc: 55500 },
-  { date: "2025-06-13", btc: 54800 },
-  { date: "2025-06-14", btc: 56200 },
-  { date: "2025-06-15", btc: 57000 },
-];
+import { useTransactions } from "@/hooks/useFinance"
+import { useMemo } from "react"
+import { format, eachDayOfInterval, startOfMonth, endOfMonth, parseISO } from "date-fns"
+import { Skeleton } from "../ui/skeleton"
 
 const chartConfig = {
-  btc: {
-    label: "Bitcoin",
-    color: "#f97316",
+  expense: {
+    label: "Expense",
+    color: "#ef4444",
   },
+  income: {
+    label: "Income",
+    color: "#22c55e",
+  }
 } satisfies ChartConfig
 
 const RevenueChart = () => {
+  const { data: transactions, isLoading } = useTransactions();
+  
+  const chartData = useMemo(() => {
+    if (!transactions) return [];
+    
+    const now = new Date();
+    const monthStart = startOfMonth(now);
+    const monthEnd = endOfMonth(now);
+    const daysInMonth = eachDayOfInterval({ start: monthStart, end: monthEnd });
+    
+    const aggregatedData = daysInMonth.map(day => {
+      const dayString = format(day, 'yyyy-MM-dd');
+      
+      const dayTransactions = transactions.filter(t => format(parseISO(t.date), 'yyyy-MM-dd') === dayString);
+
+      const income = dayTransactions
+        .filter(t => t.type === 'income')
+        .reduce((sum, t) => sum + Number(t.amount), 0);
+        
+      const expense = dayTransactions
+        .filter(t => t.type === 'expense')
+        .reduce((sum, t) => sum + Number(t.amount), 0);
+
+      return {
+        date: dayString,
+        income,
+        expense,
+      };
+    });
+
+    return aggregatedData;
+  }, [transactions]);
+  
+  if (isLoading) return <Skeleton className="min-h-[250px] w-full" />
+
   return (
     <ChartContainer config={chartConfig} className="min-h-[250px] w-full">
       <LineChart
@@ -55,35 +80,33 @@ const RevenueChart = () => {
           axisLine={false}
           tickMargin={8}
           tickFormatter={(value) => {
-            const date = new Date(value);
-            return date.toLocaleDateString("en-US", {
-              month: "short",
-              day: "numeric",
-            });
+            return format(parseISO(value), "MMM d");
           }}
         />
          <YAxis
-          domain={['dataMin - 2000', 'dataMax + 2000']}
           tickLine={false}
           axisLine={false}
           tickMargin={8}
-          tickFormatter={(value) => `$${Math.round(value / 1000)}k`}
+          tickFormatter={(value) => `$${Math.round(Number(value) / 1000)}k`}
         />
         <ChartTooltip
           cursor={true}
-          content={<ChartTooltipContent indicator="dot" hideLabel />}
-          formatter={(value) => 
-            typeof value === 'number' 
-            ? new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(value) 
-            : value
-          }
+          content={<ChartTooltipContent indicator="dot" />}
+          formatter={(value) => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(Number(value))}
         />
         <Line
-          dataKey="btc"
-          type="natural"
-          stroke="var(--color-btc)"
+          dataKey="income"
+          type="monotone"
+          stroke="var(--color-income)"
           strokeWidth={2}
-          dot={false}
+          dot={true}
+        />
+        <Line
+          dataKey="expense"
+          type="monotone"
+          stroke="var(--color-expense)"
+          strokeWidth={2}
+          dot={true}
         />
       </LineChart>
     </ChartContainer>
