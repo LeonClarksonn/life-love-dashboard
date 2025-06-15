@@ -1,45 +1,73 @@
 
+import { useState } from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { CheckCircle2, Target } from "lucide-react";
+import AddGoalForm from './AddGoalForm';
+import GoalList, { type Goal } from './GoalList';
 
-interface Goal {
-  id: number;
-  text: string;
-  completed: boolean;
-}
+const Goals = () => {
+  const [dailyGoals, setDailyGoals] = useState<Goal[]>([]);
+  const [monthlyGoals, setMonthlyGoals] = useState<Goal[]>([]);
+  const [yearlyGoals, setYearlyGoals] = useState<Goal[]>([]);
 
-const initialGoals: Goal[] = [
-  { id: 1, text: 'Learn to play the guitar', completed: false },
-  { id: 2, text: 'Run a 5k marathon', completed: false },
-  { id: 3, text: 'Save $1,000 for vacation', completed: true },
-];
+  const addGoal = (text: string, type: 'daily' | 'monthly' | 'yearly') => {
+    const newGoal: Goal = {
+      id: Date.now(),
+      text,
+      completed: false,
+    };
+    if (type === 'daily') {
+      setDailyGoals(prev => [newGoal, ...prev]);
+    } else if (type === 'monthly') {
+      setMonthlyGoals(prev => [newGoal, ...prev]);
+    } else {
+      setYearlyGoals(prev => [newGoal, ...prev]);
+    }
+  };
 
-const Goals = ({ title = "Your Goals" }: { title?: string }) => {
+  const toggleGoal = (id: number, type: 'daily' | 'monthly' | 'yearly') => {
+    const setGoals = type === 'daily' ? setDailyGoals : type === 'monthly' ? setMonthlyGoals : setYearlyGoals;
+    setGoals(prev =>
+      prev.map(goal =>
+        goal.id === id ? { ...goal, completed: !goal.completed } : goal
+      )
+    );
+  };
+
+  const deleteGoal = (id: number, type: 'daily' | 'monthly' | 'yearly') => {
+    const setGoals = type === 'daily' ? setDailyGoals : type === 'monthly' ? setMonthlyGoals : setYearlyGoals;
+    setGoals(prev => prev.filter(goal => goal.id !== id));
+  };
+
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>{title}</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <p className="text-muted-foreground mb-6">Track your long-term and short-term objectives.</p>
-        <ul className="space-y-4">
-          {initialGoals.map(goal => (
-            <li key={goal.id} className="flex items-start">
-              {goal.completed ? (
-                <CheckCircle2 className="h-6 w-6 text-green-500 mr-4 mt-1 flex-shrink-0" />
-              ) : (
-                <Target className="h-6 w-6 text-primary mr-4 mt-1 flex-shrink-0" />
-              )}
-              <div>
-                <p className={`font-medium ${goal.completed ? 'line-through text-muted-foreground' : ''}`}>
-                  {goal.text}
-                </p>
-              </div>
-            </li>
-          ))}
-        </ul>
-      </CardContent>
-    </Card>
+    <div className="space-y-8">
+      <Card>
+        <CardHeader>
+          <CardTitle>Daily Goal</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <AddGoalForm onAddGoal={(text) => addGoal(text, 'daily')} placeholder="What is your main goal for today?" />
+          <GoalList goals={dailyGoals} onToggleGoal={(id) => toggleGoal(id, 'daily')} onDeleteGoal={(id) => deleteGoal(id, 'daily')} />
+        </CardContent>
+      </Card>
+      <Card>
+        <CardHeader>
+          <CardTitle>Monthly Goals</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <AddGoalForm onAddGoal={(text) => addGoal(text, 'monthly')} placeholder="Add a monthly goal..." />
+          <GoalList goals={monthlyGoals} onToggleGoal={(id) => toggleGoal(id, 'monthly')} onDeleteGoal={(id) => deleteGoal(id, 'monthly')} />
+        </CardContent>
+      </Card>
+      <Card>
+        <CardHeader>
+          <CardTitle>Yearly Goals</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <AddGoalForm onAddGoal={(text) => addGoal(text, 'yearly')} placeholder="Add a yearly goal..." />
+          <GoalList goals={yearlyGoals} onToggleGoal={(id) => toggleGoal(id, 'yearly')} onDeleteGoal={(id) => deleteGoal(id, 'yearly')} />
+        </CardContent>
+      </Card>
+    </div>
   );
 };
 
