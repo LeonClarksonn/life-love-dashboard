@@ -6,7 +6,7 @@ const navItems = [
   { icon: Home, label: 'Dashboard', href: '#' },
   { icon: ClipboardCheck, label: 'Tasks', href: '#' },
   { icon: Target, label: 'Goals', href: '#' },
-  { icon: Wallet, label: 'Budget', href: '#' },
+  { icon: Wallet, label: 'Finances', href: '#' },
   { icon: BrainCircuit, label: 'Habits', href: '#' },
 ];
 
