@@ -38,8 +38,10 @@ const Index = () => {
           </div>
           <div className="space-y-8">
             <HabitTracker />
-            <StepTracker />
-            <GoalsOverview />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:grid-cols-1 xl:grid-cols-2">
+              <StepTracker />
+              <GoalsOverview />
+            </div>
           </div>
         </div>
       </main>
