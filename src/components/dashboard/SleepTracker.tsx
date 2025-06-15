@@ -15,7 +15,7 @@ const formSchema = z.object({
 });
 
 const SleepTracker = () => {
-  const dailyGoal = 8;
+  const dailyGoal = 9;
   
   const [sleepHours, setSleepHours] = useState(() => {
     const savedDate = localStorage.getItem('dailySleepHoursDate');
