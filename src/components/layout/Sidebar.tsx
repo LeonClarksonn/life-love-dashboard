@@ -55,8 +55,8 @@ const Sidebar = ({ isMobile = false }: { isMobile?: boolean }) => {
                 </p>
               </div>
             </div>
-            <Button asChild variant="ghost" className="w-full justify-start text-base font-medium mb-2">
-              <Link to="#">
+            <Button asChild variant={pathname === '/settings' ? "secondary" : "ghost"} className="w-full justify-start text-base font-medium mb-2">
+              <Link to="/settings">
                 <Settings className="mr-4 h-5 w-5" />
                 Settings
               </Link>
