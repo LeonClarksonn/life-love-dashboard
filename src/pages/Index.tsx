@@ -8,7 +8,7 @@ import GoalsOverview from "@/components/dashboard/GoalsOverview";
 import { Button } from "@/components/ui/button";
 import { Menu } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import StepTracker from "@/components/dashboard/StepTracker";
+import SleepTracker from "@/components/dashboard/SleepTracker";
 
 const Index = () => {
   return (
@@ -39,7 +39,7 @@ const Index = () => {
           <div className="space-y-8">
             <HabitTracker />
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:grid-cols-1 xl:grid-cols-2">
-              <StepTracker />
+              <SleepTracker />
               <GoalsOverview />
             </div>
           </div>

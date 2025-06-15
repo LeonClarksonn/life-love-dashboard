@@ -8,56 +8,57 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
-import { Plus } from "lucide-react";
+import { Bed, Plus } from "lucide-react";
 
 const formSchema = z.object({
-  steps: z.coerce.number().int().positive({ message: "Please enter a positive number." }),
+  hours: z.coerce.number().positive({ message: "Please enter a positive number." }),
 });
 
-const StepTracker = () => {
-  const dailyGoal = 10000;
+const SleepTracker = () => {
+  const dailyGoal = 8;
   
-  const [steps, setSteps] = useState(() => {
-    const savedDate = localStorage.getItem('dailyStepsDate');
+  const [sleepHours, setSleepHours] = useState(() => {
+    const savedDate = localStorage.getItem('dailySleepHoursDate');
     const today = new Date().toISOString().slice(0, 10);
     if (savedDate === today) {
-        const savedSteps = localStorage.getItem('dailySteps');
-        return savedSteps ? JSON.parse(savedSteps) : 0;
+        const savedHours = localStorage.getItem('dailySleepHours');
+        return savedHours ? JSON.parse(savedHours) : 0;
     }
     return 0;
   });
 
   useEffect(() => {
     const today = new Date().toISOString().slice(0, 10);
-    localStorage.setItem('dailyStepsDate', today);
-    localStorage.setItem('dailySteps', JSON.stringify(steps));
-  }, [steps]);
+    localStorage.setItem('dailySleepHoursDate', today);
+    localStorage.setItem('dailySleepHours', JSON.stringify(sleepHours));
+  }, [sleepHours]);
 
-  const progress = Math.min(100, (steps / dailyGoal) * 100);
+  const progress = Math.min(100, (sleepHours / dailyGoal) * 100);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      steps: undefined,
+      hours: undefined,
     },
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    setSteps(currentSteps => currentSteps + values.steps);
-    form.reset({steps: undefined});
+    setSleepHours(currentHours => currentHours + values.hours);
+    form.reset({ hours: undefined });
   }
-  
-  const formatter = new Intl.NumberFormat('en-US');
 
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Step Tracker</CardTitle>
-        <CardDescription>Your daily goal is {formatter.format(dailyGoal)} steps.</CardDescription>
+        <CardTitle className="flex items-center gap-2">
+          <Bed className="h-6 w-6" /> 
+          Sleep Tracker
+        </CardTitle>
+        <CardDescription>Your daily goal is {dailyGoal} hours.</CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="text-center">
-            <p className="text-3xl font-bold">{formatter.format(steps)}</p>
+            <p className="text-3xl font-bold">{sleepHours.toFixed(1)} <span className="text-xl text-muted-foreground">hours</span></p>
         </div>
         <Progress value={progress} className="w-full" />
         <div className="flex justify-between items-center text-sm text-muted-foreground">
@@ -68,11 +69,11 @@ const StepTracker = () => {
           <form onSubmit={form.handleSubmit(onSubmit)} className="flex items-start gap-2 pt-2">
             <FormField
               control={form.control}
-              name="steps"
+              name="hours"
               render={({ field }) => (
                 <FormItem className="flex-grow">
                   <FormControl>
-                    <Input type="number" placeholder="Add steps" {...field} />
+                    <Input type="number" step="0.1" placeholder="Add hours" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -88,4 +89,4 @@ const StepTracker = () => {
   );
 };
 
-export default StepTracker;
+export default SleepTracker;
