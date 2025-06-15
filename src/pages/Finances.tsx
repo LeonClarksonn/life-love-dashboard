@@ -1,4 +1,3 @@
-
 import Sidebar from "@/components/layout/Sidebar";
 import TotalBalanceCard from "@/components/finances/TotalBalanceCard";
 import IncomeExpenseCards from "@/components/finances/IncomeExpenseCards";
@@ -9,6 +8,7 @@ import RevenueChart from "@/components/finances/RevenueChart";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import RecentTransactions from "@/components/finances/RecentTransactions";
 import { AddTransactionDialog } from "@/components/finances/AddTransactionDialog";
+import AccountList from "@/components/finances/AccountList";
 
 const Finances = () => {
   return (
@@ -64,10 +64,10 @@ const Finances = () => {
             <IncomeExpenseCards />
             <Card>
               <CardHeader>
-                <CardTitle>My Cards</CardTitle>
+                <CardTitle>My Accounts</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-muted-foreground">Account list coming soon!</p>
+                <AccountList />
               </CardContent>
             </Card>
             <Card>

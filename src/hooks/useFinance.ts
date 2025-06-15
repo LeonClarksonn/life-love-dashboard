@@ -55,8 +55,8 @@ export const useAddTransaction = () => {
     const queryClient = useQueryClient();
     const { toast } = useToast();
 
-    return useMutation({
-        mutationFn: async (transaction: Omit<TablesInsert<'transactions'>, 'user_id'>) => {
+    return useMutation<void, Error, Omit<TablesInsert<'transactions'>, 'user_id'>>({
+        mutationFn: async (transaction) => {
             const { data: { user } } = await supabase.auth.getUser();
             if (!user) throw new Error("User not authenticated");
 
@@ -84,6 +84,29 @@ export const useAddTransaction = () => {
         onSuccess: () => {
             toast({ title: "Success", description: "Transaction added." });
             queryClient.invalidateQueries({ queryKey: ['transactions'] });
+            queryClient.invalidateQueries({ queryKey: ['accounts'] });
+        },
+        onError: (error: Error) => {
+          toast({ title: "Error", description: error.message, variant: "destructive" });
+        }
+    });
+};
+
+// Add an account
+export const useAddAccount = () => {
+    const queryClient = useQueryClient();
+    const { toast } = useToast();
+
+    return useMutation({
+        mutationFn: async (account: Omit<TablesInsert<'accounts'>, 'user_id' | 'id' | 'created_at' | 'updated_at'>) => {
+            const { data: { user } } = await supabase.auth.getUser();
+            if (!user) throw new Error("User not authenticated");
+
+            const { error } = await supabase.from('accounts').insert({ ...account, user_id: user.id });
+            if (error) throw new Error(error.message);
+        },
+        onSuccess: () => {
+            toast({ title: "Success", description: "Account added." });
             queryClient.invalidateQueries({ queryKey: ['accounts'] });
         },
         onError: (error: Error) => {
