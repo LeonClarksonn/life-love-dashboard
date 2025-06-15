@@ -19,7 +19,7 @@ const Greeting = () => {
   const fullGreeting = `${getGreeting()}, ${name}!`;
 
   useEffect(() => {
-    if (loading) return;
+    if (loading || !fullGreeting) return;
 
     setIsTyping(true);
     setDisplayedGreeting("");
@@ -29,7 +29,7 @@ const Greeting = () => {
       let i = 0;
       typingInterval = setInterval(() => {
         if (i < fullGreeting.length) {
-          setDisplayedGreeting((prev) => prev + fullGreeting.charAt(i));
+          setDisplayedGreeting(fullGreeting.substring(0, i + 1));
           i++;
         } else {
           clearInterval(typingInterval);
