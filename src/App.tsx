@@ -7,21 +7,27 @@ import Finances from "./pages/Finances";
 import TasksPage from "./pages/Tasks";
 import GoalsPage from "./pages/Goals";
 import HabitsPage from "./pages/Habits";
+import AuthPage from "./pages/AuthPage";
+import { AuthProvider } from "./providers/AuthProvider";
+import ProtectedRoute from "./components/auth/ProtectedRoute";
 
 const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Index />} />
-        <Route path="/finances" element={<Finances />} />
-        <Route path="/tasks" element={<TasksPage />} />
-        <Route path="/goals" element={<GoalsPage />} />
-        <Route path="/habits" element={<HabitsPage />} />
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-    </BrowserRouter>
+    <AuthProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/auth" element={<AuthPage />} />
+          <Route path="/" element={<ProtectedRoute><Index /></ProtectedRoute>} />
+          <Route path="/finances" element={<ProtectedRoute><Finances /></ProtectedRoute>} />
+          <Route path="/tasks" element={<ProtectedRoute><TasksPage /></ProtectedRoute>} />
+          <Route path="/goals" element={<ProtectedRoute><GoalsPage /></ProtectedRoute>} />
+          <Route path="/habits" element={<ProtectedRoute><HabitsPage /></ProtectedRoute>} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </BrowserRouter>
+    </AuthProvider>
   </QueryClientProvider>
 );
 

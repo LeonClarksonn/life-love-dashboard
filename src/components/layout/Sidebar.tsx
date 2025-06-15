@@ -1,8 +1,9 @@
 
-import { Home, ClipboardCheck, Target, Wallet, BrainCircuit, Settings } from 'lucide-react';
+import { Home, ClipboardCheck, Target, Wallet, BrainCircuit, Settings, LogOut } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Link, useLocation } from 'react-router-dom';
 import { cn } from '@/lib/utils';
+import { useAuth } from '@/providers/AuthProvider';
 
 const navItems = [
   { icon: Home, label: 'Dashboard', href: '/' },
@@ -14,6 +15,7 @@ const navItems = [
 
 const Sidebar = ({ isMobile = false }: { isMobile?: boolean }) => {
   const { pathname } = useLocation();
+  const { signOut, session } = useAuth();
 
   return (
     <aside className={cn("w-64 bg-card border-r border-border p-6 flex-col", isMobile ? "flex h-full" : "hidden md:flex")}>
@@ -33,12 +35,27 @@ const Sidebar = ({ isMobile = false }: { isMobile?: boolean }) => {
         </ul>
       </nav>
       <div>
-        <Button asChild variant="ghost" className="w-full justify-start text-base font-medium">
-          <Link to="#">
-            <Settings className="mr-4 h-5 w-5" />
-            Settings
-          </Link>
-        </Button>
+        {session ? (
+          <>
+            <Button asChild variant="ghost" className="w-full justify-start text-base font-medium mb-2">
+              <Link to="#">
+                <Settings className="mr-4 h-5 w-5" />
+                Settings
+              </Link>
+            </Button>
+            <Button variant="ghost" className="w-full justify-start text-base font-medium" onClick={signOut}>
+              <LogOut className="mr-4 h-5 w-5" />
+              Logout
+            </Button>
+          </>
+        ) : (
+          <Button asChild variant="ghost" className="w-full justify-start text-base font-medium">
+            <Link to="/auth">
+              <LogOut className="mr-4 h-5 w-5" />
+              Login
+            </Link>
+          </Button>
+        )}
       </div>
     </aside>
   );
