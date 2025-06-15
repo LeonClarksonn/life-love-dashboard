@@ -2,6 +2,7 @@
 import { Home, ClipboardCheck, Target, Wallet, BrainCircuit, Settings } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Link, useLocation } from 'react-router-dom';
+import { cn } from '@/lib/utils';
 
 const navItems = [
   { icon: Home, label: 'Dashboard', href: '/' },
@@ -11,11 +12,11 @@ const navItems = [
   { icon: BrainCircuit, label: 'Habits', href: '/habits' },
 ];
 
-const Sidebar = () => {
+const Sidebar = ({ isMobile = false }: { isMobile?: boolean }) => {
   const { pathname } = useLocation();
 
   return (
-    <aside className="w-64 bg-card border-r border-border p-6 flex-col hidden md:flex">
+    <aside className={cn("w-64 bg-card border-r border-border p-6 flex-col", isMobile ? "flex h-full" : "hidden md:flex")}>
       <h1 className="font-serif text-2xl font-bold text-primary mb-12">Life Dashboard</h1>
       <nav className="flex-1">
         <ul>
