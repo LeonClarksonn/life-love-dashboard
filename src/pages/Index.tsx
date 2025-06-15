@@ -1,4 +1,3 @@
-
 import Sidebar from "@/components/layout/Sidebar";
 import Greeting from "@/components/dashboard/Greeting";
 import QuoteCard from "@/components/dashboard/QuoteCard";
@@ -38,10 +37,8 @@ const Index = () => {
           </div>
           <div className="space-y-8">
             <HabitTracker />
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:grid-cols-1 xl:grid-cols-2">
-              <SleepTracker />
-              <GoalsOverview />
-            </div>
+            <SleepTracker />
+            <GoalsOverview />
           </div>
         </div>
       </main>
