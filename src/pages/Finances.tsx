@@ -1,10 +1,10 @@
-
 import Sidebar from "@/components/layout/Sidebar";
 import TotalBalanceCard from "@/components/finances/TotalBalanceCard";
 import IncomeExpenseCards from "@/components/finances/IncomeExpenseCards";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import RevenueChart from "@/components/finances/RevenueChart";
 
 const Finances = () => {
   return (
@@ -22,7 +22,7 @@ const Finances = () => {
                 <CardTitle>Revenue Flow</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-muted-foreground">Chart coming soon!</p>
+                <RevenueChart />
               </CardContent>
             </Card>
             <Card>
