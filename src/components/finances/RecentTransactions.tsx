@@ -5,9 +5,18 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { format } from "date-fns";
 import { icons } from 'lucide-react';
 
+const toPascalCase = (str: string) => {
+    if (!str) return 'Ellipsis';
+    return str
+        .toLowerCase()
+        .split(/[-_ ]/)
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+        .join('');
+}
+
 const TransactionIcon = ({ name, className }: { name: string | null; className?: string }) => {
-    const iconName = name && (name in icons) ? name : "ellipsis";
-    const LucideIcon = icons[iconName as keyof typeof icons];
+    const iconName = toPascalCase(name || 'ellipsis');
+    const LucideIcon = icons[iconName as keyof typeof icons] || icons['Ellipsis'];
     return <LucideIcon className={className} />;
 };
 
