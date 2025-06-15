@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Link, useLocation } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/providers/AuthProvider';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 const navItems = [
   { icon: Home, label: 'Dashboard', href: '/' },
@@ -15,7 +16,7 @@ const navItems = [
 
 const Sidebar = ({ isMobile = false }: { isMobile?: boolean }) => {
   const { pathname } = useLocation();
-  const { signOut, session } = useAuth();
+  const { signOut, session, profile } = useAuth();
 
   return (
     <aside className={cn("w-64 bg-card border-r border-border p-6 flex-col", isMobile ? "flex h-full" : "hidden md:flex")}>
@@ -37,6 +38,23 @@ const Sidebar = ({ isMobile = false }: { isMobile?: boolean }) => {
       <div>
         {session ? (
           <>
+            <div className="flex items-center gap-3 p-2 rounded-md mb-2 border-t pt-4">
+              <Avatar className="h-9 w-9">
+                <AvatarImage src="" alt="Profile picture" />
+                <AvatarFallback>
+                  {profile?.first_name?.[0]}
+                  {profile?.last_name?.[0]}
+                </AvatarFallback>
+              </Avatar>
+              <div>
+                <p className="text-sm font-medium leading-none">
+                  {profile?.first_name} {profile?.last_name}
+                </p>
+                <p className="text-xs leading-none text-muted-foreground">
+                  {session.user.email}
+                </p>
+              </div>
+            </div>
             <Button asChild variant="ghost" className="w-full justify-start text-base font-medium mb-2">
               <Link to="#">
                 <Settings className="mr-4 h-5 w-5" />
