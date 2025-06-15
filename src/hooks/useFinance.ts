@@ -1,4 +1,3 @@
-
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { TablesInsert } from '@/integrations/supabase/types';
@@ -97,8 +96,8 @@ export const useAddAccount = () => {
     const queryClient = useQueryClient();
     const { toast } = useToast();
 
-    return useMutation({
-        mutationFn: async (account: Omit<TablesInsert<'accounts'>, 'user_id' | 'id' | 'created_at' | 'updated_at'>) => {
+    return useMutation<void, Error, Omit<TablesInsert<'accounts'>, 'user_id' | 'id' | 'created_at' | 'updated_at'>>({
+        mutationFn: async (account) => {
             const { data: { user } } = await supabase.auth.getUser();
             if (!user) throw new Error("User not authenticated");
 

@@ -22,6 +22,7 @@ import { cn } from "@/lib/utils"
 import { format } from "date-fns"
 import { useAccounts, useCategories, useAddTransaction } from "@/hooks/useFinance"
 import { useState } from "react"
+import { TablesInsert } from "@/integrations/supabase/types"
 
 const transactionSchema = z.object({
   description: z.string().min(1, "Description is required"),
@@ -47,10 +48,12 @@ export function AddTransactionDialog() {
   });
   
   const onSubmit = async (values: z.infer<typeof transactionSchema>) => {
-    addTransactionMutation.mutate({
+    const transactionData: Omit<TablesInsert<'transactions'>, 'user_id'> = {
       ...values,
       date: values.date.toISOString(),
-    }, {
+    };
+    
+    addTransactionMutation.mutate(transactionData, {
       onSuccess: () => {
         setOpen(false);
         form.reset({
