@@ -26,7 +26,7 @@ const GoalsOverview = () => {
   const yearlyGoalsToShow = yearlyGoals.slice(0, 3);
 
   return (
-    <Card>
+    <Card className="mb-8">
       <CardHeader className="flex flex-row items-center justify-between pb-2">
         <CardTitle className="text-lg">Goals Overview</CardTitle>
         <Button asChild variant="ghost" size="sm">
