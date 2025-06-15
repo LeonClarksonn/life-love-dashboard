@@ -1,18 +1,35 @@
 
 import { useAuth } from "@/providers/AuthProvider";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
+
+const greetings = [
+  { lang: 'English', morning: 'Good morning', afternoon: 'Good afternoon' },
+  { lang: 'Spanish', morning: 'Buenos días', afternoon: 'Buenas tardes' },
+  { lang: 'French', morning: 'Bonjour', afternoon: 'Bon après-midi' },
+  { lang: 'German', morning: 'Guten Morgen', afternoon: 'Guten Tag' },
+  { lang: 'Italian', morning: 'Buongiorno', afternoon: 'Buon pomeriggio' },
+  { lang: 'Portuguese', morning: 'Bom dia', afternoon: 'Boa tarde' },
+  { lang: 'Japanese', morning: 'おはようございます', afternoon: 'こんにちは' },
+  { lang: 'Mandarin', morning: '早上好', afternoon: '下午好' },
+  { lang: 'Russian', morning: 'Доброе утро', afternoon: 'Добрый день' },
+];
 
 const Greeting = () => {
   const { profile, loading } = useAuth();
   const [displayedGreeting, setDisplayedGreeting] = useState("");
   const [isTyping, setIsTyping] = useState(true);
 
+  const randomGreeting = useMemo(() => {
+    const randomIndex = Math.floor(Math.random() * greetings.length);
+    return greetings[randomIndex];
+  }, []);
+
   const getGreeting = () => {
     const hour = new Date().getHours();
     if (hour < 12) {
-      return "Good morning";
+      return randomGreeting.morning;
     }
-    return "Good afternoon";
+    return randomGreeting.afternoon;
   };
   
   const name = profile?.first_name || 'there';
