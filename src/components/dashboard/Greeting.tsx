@@ -64,9 +64,9 @@ const Greeting = () => {
 
   return (
     <div className="animate-fade-in">
-      <h2 className="text-3xl font-bold text-gray-800 min-h-[44px]">
+      <h2 className="text-3xl font-bold text-gray-800 dark:text-gray-200 min-h-[44px]">
         {displayedGreeting}
-        {isTyping && <span className="animate-blink border-r-2 border-gray-800 ml-1"></span>}
+        {isTyping && <span className="animate-blink border-r-2 border-gray-800 dark:border-gray-200 ml-1"></span>}
       </h2>
       <p className="text-muted-foreground mt-1">Welcome to your personal dashboard. Let's make today productive.</p>
     </div>
